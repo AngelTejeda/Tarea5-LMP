@@ -1,0 +1,12 @@
+<form onsubmit="return false">
+  <select [(ngModel)]="countryCode" (change)="updateStates()" placeholder="Pais" name="country" id="country">
+    <option value="mx">México</option>
+    <option value="usa">Estados Unidos</option>
+  </select>
+  <select [(ngModel)]="state" placeholder="Estado" name="state" id="state">
+    <option *ngFor="let stateName of selectorStates" [value]="stateName">{{ stateName }}</option>
+  </select>
+
+  <button (click)="send()">Enviar</button>
+  State: {{ state }}
+</form>
