@@ -1,12 +1,39 @@
 <form onsubmit="return false">
-  <select [(ngModel)]="countryCode" (change)="updateStates()" placeholder="Pais" name="country" id="country">
-    <option value="mx">México</option>
-    <option value="usa">Estados Unidos</option>
-  </select>
-  <select [(ngModel)]="state" placeholder="Estado" name="state" id="state">
-    <option *ngFor="let stateName of selectorStates" [value]="stateName">{{ stateName }}</option>
-  </select>
 
-  <button (click)="send()">Enviar</button>
-  State: {{ state }}
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <label class="input-group-text" for="country">País</label>
+    </div>
+    <select class="custom-select" [(ngModel)]="countryCode" name="country" id="country" (change)="updateStates()" [disabled]="countryDisabled">
+      <option value="mx">México</option>
+      <option value="usa">Estados Unidos</option>
+    </select>
+  </div>
+
+  <span *ngIf="aparecer">
+    <div id="divstate" class="input-group">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="state">Estado</label>
+      </div>
+      <select class="custom-select" [(ngModel)]="state" placeholder="Estado" name="state" id="state" (change)="changeState()" [disabled]="stateDisabled">
+        <option *ngFor="let stateName of selectorStates" [value]="stateName">{{ stateName }}</option>
+      </select>
+      <div class="input-group-append">
+        <button class="btn btn-primary" type="button" (click)="send()" [disabled]="buttonDisabled">Enviar</button>
+      </div>
+    </div>
+  </span>
+
+  <span *ngIf="alertchange">
+    <br>
+    <div class="alert alert-warning">Presione "Enviar" para actualizar.</div>
+  </span>
+
+  <span *ngIf="alertError">
+    <div class="alert alert-danger">El estado no ha sido elegido.</div>
+  </span>
+
+  <br>
+
+  <!--Prueba State: {{ state }} -->
 </form>

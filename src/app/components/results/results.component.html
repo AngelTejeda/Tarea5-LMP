@@ -1,7 +1,14 @@
-País: {{ countryName }} <br>
-Estado: {{ state }} <br>
-Latitud: {{ lat }} <br>
-Longitud: {{ lon }} <br>
-Temperatura: {{ temp }} <br>
-Temperatura Mínima: {{ minTemp }} <br>
-Temperatura Máxima: {{  maxTemp }} <br>
+<div id="results">
+    <div class="card border-dark mb3" style="margin: auto auto">
+        <div class=" h4 card-header text-white bg-dark mb-3 text-center">
+            {{ state }}, {{ countryName }}
+        </div>
+        <div class="card-body" style="margin: 5px 5px;">
+            <div id="latitud"><b>Latitud:</b> {{ lat }}</div>
+            <div id="longitud"><b>Longitud:</b> {{ lon }}</div>
+            <div id="temperatura"><b>Temperatura:</b> {{ temp }}</div>
+            <div id="tempMinima"><b>Temperatura Mínima:</b> {{ minTemp }}</div>
+            <div id="tempMaxima"><b>Temperatura Máxima:</b> {{  maxTemp }}</div>
+        </div>
+    </div>
+</div>

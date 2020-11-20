@@ -1,4 +1,5 @@
-<app-form (readyEvent)="showResults($event)"></app-form>
-
+<app-form (readyEvent)="showResults($event)" (resultsState)="aparecer($event)"></app-form>
 <!-- *ngIf="country && state" -->
-<app-results></app-results>
+<span *ngIf="resultsStateValue">
+  <app-results></app-results>  
+</span>

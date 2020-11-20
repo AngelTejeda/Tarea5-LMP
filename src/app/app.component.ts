@@ -14,11 +14,18 @@ export class AppComponent {
   country : string;
   state : string;
 
+  resultsStateValue: boolean;
+
   ngOnInit() {
-    
+    this.resultsStateValue = false;
   }
 
   showResults($event) {
     this.results.displayValues();
   }
+
+  aparecer(rsValue: boolean){
+    this.resultsStateValue = rsValue;
+  }
+
 }
