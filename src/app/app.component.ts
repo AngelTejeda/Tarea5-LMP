@@ -13,9 +13,6 @@ export class AppComponent {
   @ViewChild(ResultsComponent) results : ResultsComponent;
   @ViewChild(FormComponent) form : FormComponent;
 
-  country : string;
-  state : string;
-
   resultsStateValue: boolean;
 
   ngOnInit() {
@@ -24,6 +21,8 @@ export class AppComponent {
 
   showResults($event) {
     this.results.displayValues();
+
+    this.addToHistory();
   }
 
   showResultsSection(rsValue: boolean){
@@ -35,6 +34,16 @@ export class AppComponent {
     this.form.countryDisabled = false;
     this.form.stateDisabled = false;
     this.form.buttonDisabled = false;
+  }
+
+  addToHistory() {
+    let historial : string = this.results.getCookie("historial");
+    let newEntry : string = this.results.getCookie("countryName") + "-" + this.results.getCookie("state"); 
+
+    if( historial.indexOf(newEntry) == -1) {
+      historial = historial + "," + newEntry;
+      this.form.setCookie("historial", historial, 1);
+    }
   }
 
 }
