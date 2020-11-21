@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Models } from '../../Models/models';
 
 @Component({
@@ -35,17 +35,94 @@ export class FormComponent implements OnInit {
     this.selectorStates = [];
 
     this.mexicoStates = [
-      "Nuevo León",
+      "Aguascalientes",
+      "Baja California",
+      "Baja California Sur",
+      "Campeche",
+      "Chiapas",
+      "Chihuahua",
       "Ciudad de México",
-      "Morelos"
+      "Coahuila de Zaragoza",
+      "Colima",
+      "Durango",
+      "Guanajuato",
+      "Guerrero",
+      "Hidalgo",
+      "Jalisco",
+      "México",
+      "Michoacán de Ocampo",
+      "Morelos",
+      "Nayarit",
+      "Nuevo León",
+      "Oaxaca",
+      "Puebla",
+      "Querétaro",
+      "Quintana Roo",
+      "San Luis Potosí",
+      "Sinaloa",
+      "Sonora",
+      "Tabasco",
+      "Tamaulipas",
+      "Tlaxcala",
+      "Veracruz de Ignacio de la Llave",
+      "Yucatán",
+      "Zacatecas"
+
     ];
 
     this.usaStates = [
+      "Alabama",
+      "Alaska",
+      "Arizona",
+      "Arkansas",
+      "California",
+      "Carolina del Norte",
+      "Carolina del Sur",
+      "Colorado",
+      "Connecticut",
+      "Dakota del Norte",
+      "Dakota del Sur",
+      "Delaware",
+      "Florida",
+      "Georgia",
+      "Hawái",
+      "Idaho",
+      "Illinois",
+      "Indiana",
+      "Iowa",
+      "Kansas",
+      "Kentucky",
+      "Luisiana",
+      "Maine",
+      "Maryland",
+      "Massachusetts",
+      "Míchigan",
+      "Minesota",
+      "Misisipi",
+      "Misuri",
+      "Montana",
+      "Nebraska",
+      "Nevada",
+      "Nueva Jersey",
+      "Nueva York",
+      "Nuevo Hampshire",
+      "Nuevo México",
+      "Ohio",
+      "Oklahoma",
+      "Oregón",
+      "Pensilvania",
+      "Rhode Island",
+      "Tennessee",
+      "Texas",
+      "Utah",
+      "Vermont",
+      "Virginia",
+      "Virginia Occidental",
       "Washington",
-      "Los Ángeles"
+      "Wisconsin",
+      "Wyoming"
     ];
 
-    this.aparecer = false;
     this.alertchange = false;
     this.alertError = false;
     this.results = false;
@@ -68,21 +145,19 @@ export class FormComponent implements OnInit {
   }
 
   changeState() {
-    this.alertchange = true;
-    if(this.alertError){
+    if (this.alertError) {
       this.alertError = false;
     }
   }
 
   send() {
-    /*
-    this.countryDisabled = true;
-    this.stateDisabled = true;
-    this.buttonDisabled = true;
-    */
     if (this.state == undefined) {
       this.alertError = true;
+      this.results = false;
     } else {
+      this.countryDisabled = true;
+      this.stateDisabled = true;
+      this.buttonDisabled = true;
       this.alertchange = false;
       if (this.countryCode == "mx")
         this.setCookie("countryName", "México", 1);
@@ -107,7 +182,7 @@ export class FormComponent implements OnInit {
         this.setCookie("minTemp", data.main.temp_min, 1);
         this.readyEvent.emit();
       });
-      this.results = true;
+    this.results = true;
   }
 
   setCookie(cookieName: string, cookieValue: string, daysToExpire: number): void {

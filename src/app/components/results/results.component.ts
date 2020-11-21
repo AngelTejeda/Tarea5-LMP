@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-results',
@@ -8,6 +8,8 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ResultsComponent implements OnInit {
 
   constructor() { }
+
+  @Output() resultsClose = new EventEmitter<boolean>();
 
   countryName : string;
   state : string;
@@ -46,5 +48,9 @@ export class ResultsComponent implements OnInit {
     }
 
     return "";
+  }
+
+  close(){
+    this.resultsClose.emit(false);
   }
 }

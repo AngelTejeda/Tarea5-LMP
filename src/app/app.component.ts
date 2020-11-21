@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { ResultsComponent } from './components/results/results.component';
+import {FormComponent} from './components/form/form.component'
 
 @Component({
   selector: 'app-root',
@@ -10,6 +11,7 @@ export class AppComponent {
   title = 'Tarea5';
 
   @ViewChild(ResultsComponent) results : ResultsComponent;
+  @ViewChild(FormComponent) form : FormComponent;
 
   country : string;
   state : string;
@@ -24,8 +26,15 @@ export class AppComponent {
     this.results.displayValues();
   }
 
-  aparecer(rsValue: boolean){
+  showResultsSection(rsValue: boolean){
     this.resultsStateValue = rsValue;
+  }
+
+  close(rsClose: boolean){
+    this.resultsStateValue = rsClose;
+    this.form.countryDisabled = false;
+    this.form.stateDisabled = false;
+    this.form.buttonDisabled = false;
   }
 
 }
