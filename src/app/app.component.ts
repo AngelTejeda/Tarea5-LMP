@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { ResultsComponent } from './components/results/results.component';
 import {FormComponent} from './components/form/form.component'
+import {HistorialComponent} from './components/historial/historial.component'
+import { convertUpdateArguments } from '@angular/compiler/src/compiler_util/expression_converter';
 
 @Component({
   selector: 'app-root',
@@ -9,14 +11,17 @@ import {FormComponent} from './components/form/form.component'
 })
 export class AppComponent {
   title = 'Tarea5';
+  content: string;
+  state: string;
 
   @ViewChild(ResultsComponent) results : ResultsComponent;
   @ViewChild(FormComponent) form : FormComponent;
+  @ViewChild(HistorialComponent) hcomponent : HistorialComponent;
 
   resultsStateValue: boolean;
 
-  ngOnInit() {
-    this.resultsStateValue = false;
+  ngOnInit():void {
+    this.resultsStateValue = true;
   }
 
   showResults($event) {
@@ -39,11 +44,21 @@ export class AppComponent {
   addToHistory() {
     let historial : string = this.results.getCookie("historial");
     let newEntry : string = this.results.getCookie("countryName") + "-" + this.results.getCookie("state"); 
-
     if( historial.indexOf(newEntry) == -1) {
-      historial = historial + "," + newEntry;
+      if(historial == ""){
+        historial = newEntry;
+      }else{
+        historial = historial + "," + newEntry;
+      }
       this.form.setCookie("historial", historial, 1);
     }
+    this.update(historial)
+  }
+
+  update(historial: string){
+    this.content = historial
+    this.hcomponent.historialContent = historial;
+    this.hcomponent.update()
   }
 
 }

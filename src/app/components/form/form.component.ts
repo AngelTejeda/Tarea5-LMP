@@ -10,6 +10,7 @@ export class FormComponent implements OnInit {
 
   @Output() readyEvent = new EventEmitter<void>();
   @Output() resultsState = new EventEmitter<boolean>();
+  @Output() stateContent = new EventEmitter<string>();
 
   constructor() { }
 

@@ -1,0 +1,19 @@
+<div class="text-center">
+    <button id="btnHistorial" type="button" class="btn btn-secondary" (click)="show()">
+        Historial
+    </button>
+</div>
+<br>
+<span *ngIf="historialVisible">
+    <div *ngIf="vacio" id="vacio" class="text-center">
+        No hay historial.
+    </div>
+    <div *ngIf="!vacio" id="historial">
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let element of elements">
+                {{element.state}}, {{element.country}}
+                <br>
+            </li>
+        </ul>
+    </div>
+</span>

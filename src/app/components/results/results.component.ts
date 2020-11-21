@@ -7,9 +7,16 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class ResultsComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+    this.inicio =  false;
+  }
+
+  @Input() stateContent: string;
 
   @Output() resultsClose = new EventEmitter<boolean>();
+  @Output() historialContent = new EventEmitter<string>();
+
+  inicio: boolean;
 
   countryName : string;
   state : string;
@@ -20,10 +27,11 @@ export class ResultsComponent implements OnInit {
   minTemp : string;
 
   ngOnInit() : void {
-    
+    this.historialContent.emit(this.getCookie("historial"))
   }
 
   displayValues() : void {
+    this.inicio = true;
     this.countryName = this.getCookie("countryName");
     this.state = this.getCookie("state");
     this.lat = this.getCookie("lat");
