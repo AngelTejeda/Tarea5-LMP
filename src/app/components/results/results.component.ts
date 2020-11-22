@@ -8,7 +8,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class ResultsComponent implements OnInit {
 
   constructor() {
-    this.inicio =  false;
+    this.cardShow =  false;
   }
 
   @Input() stateContent: string;
@@ -16,7 +16,7 @@ export class ResultsComponent implements OnInit {
   @Output() resultsClose = new EventEmitter<boolean>();
   @Output() historialContent = new EventEmitter<string>();
 
-  inicio: boolean;
+  cardShow: boolean;
 
   countryName : string;
   state : string;
@@ -27,11 +27,11 @@ export class ResultsComponent implements OnInit {
   minTemp : string;
 
   ngOnInit() : void {
-    this.historialContent.emit(this.getCookie("historial"))
+      this.historialContent.emit(this.getCookie("historial"));
   }
 
   displayValues() : void {
-    this.inicio = true;
+    this.cardShow = true;
     this.countryName = this.getCookie("countryName");
     this.state = this.getCookie("state");
     this.lat = this.getCookie("lat");
@@ -59,6 +59,8 @@ export class ResultsComponent implements OnInit {
   }
 
   close(){
+    this.cardShow = false;
     this.resultsClose.emit(false);
   }
+
 }

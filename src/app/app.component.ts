@@ -11,7 +11,7 @@ import { convertUpdateArguments } from '@angular/compiler/src/compiler_util/expr
 })
 export class AppComponent {
   title = 'Tarea5';
-  content: string;
+  contentHistory: string = "";
   state: string;
 
   @ViewChild(ResultsComponent) results : ResultsComponent;
@@ -43,7 +43,7 @@ export class AppComponent {
 
   addToHistory() {
     let historial : string = this.results.getCookie("historial");
-    let newEntry : string = this.results.getCookie("countryName") + "-" + this.results.getCookie("state"); 
+    let newEntry : string = this.results.getCookie("countryName") + "/" + this.results.getCookie("state")+ "/" + this.results.getCookie("lat") + "/" + this.results.getCookie("lon") + "/" + this.results.getCookie("temp") + "/" + this.results.getCookie("maxTemp") + "/" + this.results.getCookie("minTemp"); 
     if( historial.indexOf(newEntry) == -1) {
       if(historial == ""){
         historial = newEntry;
@@ -56,9 +56,10 @@ export class AppComponent {
   }
 
   update(historial: string){
-    this.content = historial
-    this.hcomponent.historialContent = historial;
-    this.hcomponent.update()
+    this.contentHistory = historial
+    if(this.hcomponent != undefined){
+      this.hcomponent.historialContent = historial;
+      this.hcomponent.update()
+    }
   }
-
 }

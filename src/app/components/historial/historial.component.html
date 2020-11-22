@@ -10,8 +10,23 @@
     </div>
     <div *ngIf="!vacio" id="historial">
         <ul class="list-group">
-            <li class="list-group-item" *ngFor="let element of elements">
-                {{element.state}}, {{element.country}}
+            <li class="list-group-item" *ngFor="let element of elements; index as i">
+                <div class="card">
+                    <div class="card-header" id="cardHistory">
+                        <button class="btn btn-link text-dark" data-toggle="collapse" [attr.data-target]=" '#' + i">
+                            {{element.state}}, {{element.country}}
+                        </button>
+                    </div>
+                    <div [id]="i" class="collapse in">
+                        <div class="card-body">
+                            <b>Latitud: </b>{{element.latitud}} <br>
+                            <b>Longitud: </b>{{element.longitud}} <br>
+                            <b>Temperatura: </b>{{element.temperatura}} <br>
+                            <b>Temperatura Máxima: </b>{{element.maxTemperatura}} <br>
+                            <b>Temperatura Minima: </b>{{element.minTemperatura}} <br>
+                        </div>
+                    </div>
+                </div>
                 <br>
             </li>
         </ul>

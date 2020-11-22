@@ -46,10 +46,15 @@ export class HistorialComponent implements OnInit {
     this.elements = []
     var duplas = this.historialContent.split(",");
     duplas.forEach(dupla => {
-      var d = dupla.split("-")
+      var d = dupla.split("/")
       this.elements.push({
         country: d[0],
-        state: d[1]
+        state: d[1],
+        latitud: d[2],
+        longitud: d[3],
+        temperatura: d[4],
+        maxTemperatura: d[5],
+        minTemperatura: d[6]
       })
     })
   }

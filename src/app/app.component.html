@@ -1,6 +1,4 @@
 <app-form (readyEvent)="showResults($event)" (resultsState)="showResultsSection($event)" (stateContent)="state = $event"></app-form>
 <!-- *ngIf="country && state" -->
-<span *ngIf="resultsStateValue">
-  <app-results (resultsClose)="close($event)" (historialContent)="update($event)"></app-results>  
-</span>
-<app-historial [content]="content"></app-historial>
+<app-results (resultsClose)="close($event)" (historialContent)="update($event)"></app-results>  
+<app-historial [content]="contentHistory"></app-historial>
