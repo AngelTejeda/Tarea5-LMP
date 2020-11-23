@@ -1,6 +1,17 @@
 import { NgIf } from '@angular/common';
 import { Component, OnInit, Input} from '@angular/core';
 
+export interface searchResultsInterface {
+  country: string;
+  state: string;
+  latitud: string;
+  longitud: string;
+  temperatura: string;
+  maxTemperatura: string;
+  minTemperatura: string;
+  time: Date;
+}
+
 @Component({
   selector: 'app-historial',
   templateUrl: './historial.component.html',
@@ -8,19 +19,20 @@ import { Component, OnInit, Input} from '@angular/core';
 })
 export class HistorialComponent implements OnInit {
 
+  @Input() content: string = "";
+
   historialVisible: boolean;
   vacio: boolean;
   historialContent: string;
 
-  @Input() content: string = "";
-
-  elements = []
+  elements : searchResultsInterface[];
 
   constructor() {
   }
 
   ngOnInit(): void {
     this.historialVisible = false;
+    this.elements = [];
   }
 
   show() {
@@ -47,7 +59,7 @@ export class HistorialComponent implements OnInit {
     var duplas = this.historialContent.split(",");
     duplas.forEach(dupla => {
       var d = dupla.split("/")
-      this.elements.push({
+      this.elements.push(<searchResultsInterface>{
         country: d[0],
         state: d[1],
         latitud: d[2],
@@ -58,4 +70,22 @@ export class HistorialComponent implements OnInit {
       })
     })
   }
+
+  initializeHistorial() : void {
+    this.elements = []
+    var duplas = this.historialContent.split(",");
+
+    duplas.forEach(dupla => {
+      var d = dupla.split("/")
+      this.elements.push(<searchResultsInterface>{
+        country: d[0],
+        state: d[1],
+        latitud: d[2],
+        longitud: d[3],
+        temperatura: d[4],
+        maxTemperatura: d[5],
+        minTemperatura: d[6]
+      });
+    });
+  }  
 }

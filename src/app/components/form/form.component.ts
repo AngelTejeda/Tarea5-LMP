@@ -9,30 +9,23 @@ import { Models } from '../../Models/models';
 export class FormComponent implements OnInit {
 
   @Output() readyEvent = new EventEmitter<void>();
-  @Output() resultsState = new EventEmitter<boolean>();
-  @Output() stateContent = new EventEmitter<string>();
 
   constructor() { }
 
-  countryCode: string;
-  state: string;
-  selectorStates: string[];
-  mexicoStates: string[];
-  usaStates: string[];
-  dataResponse: any;
+  countryCode: string;  //Código del país seleccionado.
+  state: string;        //Nombre del estado seleccionado.
 
-  aparecer: boolean;
-  alertchange: boolean;
-  alertError: boolean;
-  mensaje: string = "Mandando informacion";
+  selectorStates: string[];   //Lista de estados que se muestra en el select.
+  mexicoStates: string[];     //Lista de estados de México.
+  usaStates: string[];        //Lista de estados de Estados Unidos.
 
-  countryDisabled: boolean;
-  stateDisabled: boolean;
-  buttonDisabled: boolean;
+  showStates: boolean;     //Variable para mostrar los estados una vez se selecciona el país.
+  formDisabled : boolean;  //Variable para habilitar o deshabilitar el form.
+  
+  alertError: boolean;     //Variable para indicar si se debe mostrar un error en pantalla.
+  errorMessage : string;   //Mensaje que se muestra si ocurre un error.
 
-  results: boolean;
-
-  ngOnInit() {
+  ngOnInit() : void {
     this.selectorStates = [];
 
     this.mexicoStates = [
@@ -124,55 +117,58 @@ export class FormComponent implements OnInit {
       "Wyoming"
     ];
 
-    this.alertchange = false;
     this.alertError = false;
-    this.results = false;
 
-    this.countryDisabled = false;
-    this.stateDisabled = false;
-    this.buttonDisabled = false;
+    this.formDisabled = false;
   }
 
-  updateStates() {
+  updateStates() : void {
+    //Actualiza los estados que se muestran en el selector.
+    //Se manda llamar desde el componente form cuando se selecciona un país.
     this.state = undefined;
-    if (this.countryCode == "mx") {
+
+    if (this.countryCode == "mx")
       this.selectorStates = this.mexicoStates;
-    }
-    else {
+    else
       this.selectorStates = this.usaStates
-    }
-    this.aparecer = true;
-    this.alertchange = true;
+
+    this.showStates = true;
   }
 
-  changeState() {
-    if (this.alertError) {
-      this.alertError = false;
-    }
+  changeState() : void {
+    //En caso de que haya un mensaje de error en pantalla, lo oculta cuando se selecciona un estado.
+    //Se manda llamar desde el componente form cuando se selecciona un estado.
+    this.alertError = false;
   }
 
-  send() {
+  send() : void {
+    //Actualiza las cookies de la búsqueda actual y realiza una llamada a la API.
+    //Se manda llamar desde el componente form cuando se presiona el botón Enviar.
     if (this.state == undefined) {
       this.alertError = true;
-      this.results = false;
-    } else {
-      this.countryDisabled = true;
-      this.stateDisabled = true;
-      this.buttonDisabled = true;
-      this.alertchange = false;
+      this.errorMessage = "No se ha seleccionado un estado.";
+    }
+    else {
+      this.formDisabled = true;
+
+      //Cookies de la búsqueda actual
       if (this.countryCode == "mx")
         this.setCookie("countryName", "México", 1);
       else
         this.setCookie("countryName", "Estados Unidos", 1);
+      
       this.setCookie("countryCode", this.countryCode, 1);
       this.setCookie("state", this.state, 1);
 
+      //Llamada API
       this.apiCall(this.countryCode, this.state);
     }
-    this.resultsState.emit(this.results);
   }
 
   async apiCall(countryCode: string, state: string) {
+    //Realiza una petición a la API con el país y el estado seleccionado.
+    //Guarda el resutlado de la petición en cookies y emite un evento readyEvent que atrapa el componente app y le indica
+    //que debe mostrar los resultados de la búsqueda.
     fetch(`http://api.openweathermap.org/data/2.5/weather?q=${state},${countryCode}&appid=c9f3f0ec30af23465397f60c7ad5fc2b&lang=es&units=metric`)
       .then(data => data.json())
       .then(data => {
@@ -181,12 +177,18 @@ export class FormComponent implements OnInit {
         this.setCookie("temp", data.main.temp, 1);
         this.setCookie("maxTemp", data.main.temp_max, 1);
         this.setCookie("minTemp", data.main.temp_min, 1);
+
         this.readyEvent.emit();
+      })
+      .catch(() => {
+        this.errorMessage = "Ha ocurrido un error.";
+        this.alertError = true;
+        this.formDisabled = false;
       });
-    this.results = true;
   }
 
-  setCookie(cookieName: string, cookieValue: string, daysToExpire: number): void {
+  setCookie(cookieName: string, cookieValue: string, daysToExpire: number) : void {
+    //Agrega una cookie.
     let date: Date = new Date();
     let expires: string = "expires=";
 

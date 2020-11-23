@@ -7,31 +7,35 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class ResultsComponent implements OnInit {
 
+  @Output() closeResultsEvent = new EventEmitter<boolean>();
+  @Output() initializeHistorial = new EventEmitter<string>();
+
   constructor() {
-    this.cardShow =  false;
+    this.showCard =  false;
   }
 
-  @Input() stateContent: string;
+  showCard: boolean;
 
-  @Output() resultsClose = new EventEmitter<boolean>();
-  @Output() historialContent = new EventEmitter<string>();
-
-  cardShow: boolean;
-
-  countryName : string;
-  state : string;
-  lat : string;
-  lon : string;
-  temp : string;
-  maxTemp : string;
-  minTemp : string;
+  //Resultados de la Búsqueda
+  countryName : string; //Nombre del país
+  state : string;       //Nombre del estado
+  lat : string;         //Latitud
+  lon : string;         //Longitud
+  temp : string;        //Temperatura Actual
+  maxTemp : string;     //Temperatura Máxima
+  minTemp : string;     //Temperatura Mínima
 
   ngOnInit() : void {
-      this.historialContent.emit(this.getCookie("historial"));
+    //Al iniciar el componente se toma el historial de las cookies para actualizaro.
+    this.initializeHistorial.emit(this.getCookie("historial"));
   }
 
   displayValues() : void {
-    this.cardShow = true;
+    //Toma los valores de los resultados de la búsqueda actual desde las cookies y los guarda para mostrarlos en el componente.
+    //Se manda llamar desde el componente app cuando captura un evento readyEvent lanzado por el componente form.
+    this.showCard = true;
+
+    //Resultados de la búsqueda.
     this.countryName = this.getCookie("countryName");
     this.state = this.getCookie("state");
     this.lat = this.getCookie("lat");
@@ -42,6 +46,7 @@ export class ResultsComponent implements OnInit {
   }
 
   getCookie(cookieName : string) : string {
+    //Regresa el valor de la cookie indicada.
     let allCookies : string[] = decodeURIComponent(document.cookie).split(";");
 
     for(let cookie of allCookies) {
@@ -58,9 +63,10 @@ export class ResultsComponent implements OnInit {
     return "";
   }
 
-  close(){
-    this.cardShow = false;
-    this.resultsClose.emit(false);
+  close() : void {
+    //Oculta el componente.
+    this.showCard = false;
+    this.closeResultsEvent.emit();
   }
 
 }

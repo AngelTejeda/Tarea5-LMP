@@ -4,32 +4,31 @@
     <div class="input-group-prepend">
       <label class="input-group-text" for="country">País</label>
     </div>
-    <select class="custom-select" [(ngModel)]="countryCode" name="country" id="country" (change)="updateStates()" [disabled]="countryDisabled">
+
+    <select class="custom-select" [(ngModel)]="countryCode" name="country" (change)="updateStates()" [disabled]="formDisabled">
       <option value="mx">México</option>
       <option value="usa">Estados Unidos</option>
     </select>
   </div>
 
-  <span *ngIf="aparecer">
-    <div id="divstate" class="input-group">
-      <div class="input-group-prepend">
-        <label class="input-group-text" for="state">Estado</label>
-      </div>
-      <select class="custom-select" [(ngModel)]="state" placeholder="Estado" name="state" id="state" (change)="changeState()" [disabled]="stateDisabled">
-        <option *ngFor="let stateName of selectorStates" [value]="stateName">{{ stateName }}</option>
-      </select>
-      <div class="input-group-append">
-        <button class="btn btn-primary" type="button" (click)="send()" [disabled]="buttonDisabled">Enviar</button>
-      </div>
+  <div class="input-group" *ngIf="showStates">
+    <div class="input-group-prepend">
+      <label class="input-group-text" for="state">Estado</label>
     </div>
-  </span>
+    
+    <select class="custom-select" placeholder="Estado" name="state" [(ngModel)]="state" (change)="changeState()" [disabled]="formDisabled">
+      <option *ngFor="let stateName of selectorStates" [value]="stateName">{{ stateName }}</option>
+    </select>
+
+    <div class="input-group-append">
+      <button class="btn btn-primary" type="button" (click)="send()" [disabled]="formDisabled">Enviar</button>
+    </div>
+  </div>
 
   <span *ngIf="alertError">
     <br>
-    <div class="alert alert-danger">El estado no ha sido elegido.</div>
+    <div class="alert alert-danger">{{ errorMessage }}</div>
   </span>
 
   <br><br>
-
-  <!--Prueba State: {{ state }} -->
 </form>
