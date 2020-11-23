@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-results',
@@ -8,14 +8,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class ResultsComponent implements OnInit {
 
   @Output() closeResultsEvent = new EventEmitter<boolean>();
-  @Output() initializeHistorial = new EventEmitter<string>();
 
-  constructor() {
-    this.showCard =  false;
-  }
-
-  showCard: boolean;
-
+  
   //Resultados de la Búsqueda
   countryName : string; //Nombre del país
   state : string;       //Nombre del estado
@@ -24,10 +18,11 @@ export class ResultsComponent implements OnInit {
   temp : string;        //Temperatura Actual
   maxTemp : string;     //Temperatura Máxima
   minTemp : string;     //Temperatura Mínima
+  
+  showCard: boolean;
 
   ngOnInit() : void {
-    //Al iniciar el componente se toma el historial de las cookies para actualizaro.
-    this.initializeHistorial.emit(this.getCookie("historial"));
+    this.showCard = false;
   }
 
   displayValues() : void {

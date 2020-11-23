@@ -1,7 +1,6 @@
-import { NgIf } from '@angular/common';
-import { Component, OnInit, Input} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-export interface searchResultsInterface {
+export interface historialEntryInterface {
   country: string;
   state: string;
   latitud: string;
@@ -9,7 +8,7 @@ export interface searchResultsInterface {
   temperatura: string;
   maxTemperatura: string;
   minTemperatura: string;
-  time: Date;
+  time: string;
 }
 
 @Component({
@@ -19,24 +18,20 @@ export interface searchResultsInterface {
 })
 export class HistorialComponent implements OnInit {
 
-  @Input() content: string = "";
+  historialEntries : historialEntryInterface[]; //Arreglo de consultas en el historial.
+  historialVisible: boolean;                    //Variable que indica si se muestra o no el historial.
+  vacio: boolean;                               //Variable que indica si el historial está vacío.
 
-  historialVisible: boolean;
-  vacio: boolean;
-  historialContent: string;
-
-  elements : searchResultsInterface[];
-
-  constructor() {
-  }
-
-  ngOnInit(): void {
+  ngOnInit() : void {
     this.historialVisible = false;
-    this.elements = [];
+    this.vacio = true;
+    this.historialEntries = [];
   }
 
-  show() {
-    var btnHistorial = document.getElementById("btnHistorial")
+  toggleButton() : void {
+    //Cambia entre la leyenda del botón, entre "Historial" y "Cerrar Historial".
+    let btnHistorial : HTMLElement = document.getElementById("btnHistorial")
+
     if (this.historialVisible) {
       this.historialVisible = false;
       btnHistorial.innerHTML = "Historial"
@@ -45,47 +40,47 @@ export class HistorialComponent implements OnInit {
       this.historialVisible = true;
       btnHistorial.innerHTML = "Cerrar Historial"
     }
-    this.historialContent = this.content
-    this.update()
-    if(this.elements[0].country==""){
-      this.vacio=true;
-    }else{
-      this.vacio=false;
-    }
   }
 
-  update() {
-    this.elements = []
-    var duplas = this.historialContent.split(",");
-    duplas.forEach(dupla => {
-      var d = dupla.split("/")
-      this.elements.push(<searchResultsInterface>{
-        country: d[0],
-        state: d[1],
-        latitud: d[2],
-        longitud: d[3],
-        temperatura: d[4],
-        maxTemperatura: d[5],
-        minTemperatura: d[6]
-      })
-    })
-  }
+  addEntryToHistorial(newEntry : string) : void {
+    //Agrega una búsqueda al arreglo de historiales.
+    let fields : string[] = newEntry.split("/");
 
-  initializeHistorial() : void {
-    this.elements = []
-    var duplas = this.historialContent.split(",");
-
-    duplas.forEach(dupla => {
-      var d = dupla.split("/")
-      this.elements.push(<searchResultsInterface>{
-        country: d[0],
-        state: d[1],
-        latitud: d[2],
-        longitud: d[3],
-        temperatura: d[4],
-        maxTemperatura: d[5],
-        minTemperatura: d[6]
-      });
+    this.historialEntries.unshift(<historialEntryInterface>{
+      country: fields[0],
+      state: fields[1],
+      latitud: fields[2],
+      longitud: fields[3],
+      temperatura: fields[4],
+      maxTemperatura: fields[5],
+      minTemperatura: fields[6],
+      time : fields[7]
     });
-  }  
+
+    this.vacio = false;
+  }
+
+  initializeHistorial(historial: string) : void {
+    //Inicializa el historial con base en la cookie del historial.
+    //Se manda a llamar desde el componente app cuando todos los componentes están cargados.
+    if(historial == "") {
+      this.vacio = true;
+      return;
+    }
+    else
+      this.vacio = false;
+
+    let entries : string[] = historial.split(",");
+
+    entries.forEach(entry => {
+      this.addEntryToHistorial(entry);
+    });
+  }
+
+  borrarHistorial() : void {
+    //Borra la cookie de historial y el arreglo de búsquedas.
+    document.cookie = "historial=;";
+    this.historialEntries = [];
+    this.vacio = true;
+  }
 }

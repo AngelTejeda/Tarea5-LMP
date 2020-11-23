@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Models } from '../../Models/models';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { resolve } from 'dns';
 
 @Component({
   selector: 'app-form',
@@ -8,9 +8,7 @@ import { Models } from '../../Models/models';
 })
 export class FormComponent implements OnInit {
 
-  @Output() readyEvent = new EventEmitter<void>();
-
-  constructor() { }
+  @Output() readyEvent = new EventEmitter<void>();  //Evento que se emite cuando se realiza una búsqueda.
 
   countryCode: string;  //Código del país seleccionado.
   state: string;        //Nombre del estado seleccionado.
@@ -118,7 +116,6 @@ export class FormComponent implements OnInit {
     ];
 
     this.alertError = false;
-
     this.formDisabled = false;
   }
 
@@ -170,7 +167,7 @@ export class FormComponent implements OnInit {
     //Guarda el resutlado de la petición en cookies y emite un evento readyEvent que atrapa el componente app y le indica
     //que debe mostrar los resultados de la búsqueda.
     fetch(`http://api.openweathermap.org/data/2.5/weather?q=${state},${countryCode}&appid=c9f3f0ec30af23465397f60c7ad5fc2b&lang=es&units=metric`)
-      .then(data => data.json())
+      .then(response => response.json())
       .then(data => {
         this.setCookie("lat", data.coord.lat, 1);
         this.setCookie("lon", data.coord.lon, 1);
@@ -188,7 +185,7 @@ export class FormComponent implements OnInit {
   }
 
   setCookie(cookieName: string, cookieValue: string, daysToExpire: number) : void {
-    //Agrega una cookie.
+    //Agrega una cookie con el nombre y el valor especificado.
     let date: Date = new Date();
     let expires: string = "expires=";
 

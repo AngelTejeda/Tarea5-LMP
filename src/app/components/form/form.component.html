@@ -1,5 +1,6 @@
 <form onsubmit="return false">
 
+  <!-- País -->
   <div class="input-group mb-3">
     <div class="input-group-prepend">
       <label class="input-group-text" for="country">País</label>
@@ -11,6 +12,7 @@
     </select>
   </div>
 
+  <!-- Estado -->
   <div class="input-group" *ngIf="showStates">
     <div class="input-group-prepend">
       <label class="input-group-text" for="state">Estado</label>
@@ -25,6 +27,7 @@
     </div>
   </div>
 
+  <!-- Error -->
   <span *ngIf="alertError">
     <br>
     <div class="alert alert-danger">{{ errorMessage }}</div>

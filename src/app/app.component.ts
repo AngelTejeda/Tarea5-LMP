@@ -1,8 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ResultsComponent } from './components/results/results.component';
-import {FormComponent} from './components/form/form.component'
-import {HistorialComponent} from './components/historial/historial.component'
-import { convertUpdateArguments } from '@angular/compiler/src/compiler_util/expression_converter';
+import { FormComponent } from './components/form/form.component'
+import { HistorialComponent } from './components/historial/historial.component'
 
 @Component({
   selector: 'app-root',
@@ -11,18 +10,18 @@ import { convertUpdateArguments } from '@angular/compiler/src/compiler_util/expr
 })
 export class AppComponent {
   title = 'Tarea5';
-  contentHistory: string = "";
 
   @ViewChild(ResultsComponent) resultsComponent : ResultsComponent;
   @ViewChild(FormComponent) formComponent : FormComponent;
   @ViewChild(HistorialComponent) historialComponent : HistorialComponent;
 
-  ngOnInit() : void { }
+  ngAfterViewInit() : void {
+    this.historialComponent.initializeHistorial(this.resultsComponent.getCookie("historial"));
+  }
 
   showResults() : void {
     //Muestra los resultados de la búsqueda en el componente results y agrega la búsqueda al historial.
     this.resultsComponent.displayValues();
-
     this.addToHistory();
   }
 
@@ -41,7 +40,8 @@ export class AppComponent {
       this.resultsComponent.getCookie("lon") + "/" +
       this.resultsComponent.getCookie("temp") + "/" +
       this.resultsComponent.getCookie("maxTemp") + "/" +
-      this.resultsComponent.getCookie("minTemp");
+      this.resultsComponent.getCookie("minTemp") + "/" +
+      new Date().toUTCString().replace(",", "");
     
     if(historial == "")
       historial = newEntry;
@@ -50,15 +50,6 @@ export class AppComponent {
     
     this.formComponent.setCookie("historial", historial, 1);
 
-    this.updateHistorial(historial);
-  }
-
-  updateHistorial(historial: string) : void{
-    this.contentHistory = historial;
-    
-    if(this.historialComponent != undefined){
-      this.historialComponent.historialContent = historial;
-      this.historialComponent.initializeHistorial();
-    }
+    this.historialComponent.addEntryToHistorial(newEntry);
   }
 }

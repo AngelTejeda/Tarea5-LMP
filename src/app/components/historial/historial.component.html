@@ -1,34 +1,43 @@
 <div class="text-center">
-    <button id="btnHistorial" type="button" class="btn btn-secondary" (click)="show()">
-        Historial
-    </button>
+  <button id="btnHistorial" type="button" class="btn btn-secondary" (click)="toggleButton()">
+    Historial
+  </button>
+
+  <button id="btnHistorial" type="button" class="btn btn-secondary" *ngIf="!vacio" (click)="borrarHistorial()">
+    Borrar Historial
+  </button>
 </div>
 <br>
+
 <span *ngIf="historialVisible">
-    <div *ngIf="vacio" id="vacio" class="text-center">
-        No hay historial.
-    </div>
-    <div *ngIf="!vacio" id="historial">
-        <ul class="list-group">
-            <li class="list-group-item" *ngFor="let element of elements; index as i">
-                <div class="card">
-                    <div class="card-header" id="cardHistory">
-                        <button class="btn btn-link text-dark" data-toggle="collapse" [attr.data-target]=" '#' + i">
-                            {{element.state}}, {{element.country}}
-                        </button>
-                    </div>
-                    <div [id]="i" class="collapse in">
-                        <div class="card-body">
-                            <b>Latitud: </b>{{element.latitud}} <br>
-                            <b>Longitud: </b>{{element.longitud}} <br>
-                            <b>Temperatura: </b>{{element.temperatura}} <br>
-                            <b>Temperatura Máxima: </b>{{element.maxTemperatura}} <br>
-                            <b>Temperatura Minima: </b>{{element.minTemperatura}} <br>
-                        </div>
-                    </div>
-                </div>
-                <br>
-            </li>
-        </ul>
-    </div>
+  <div *ngIf="vacio" class="text-center">
+    No hay historial.
+  </div>
+
+  <div *ngIf="!vacio">
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let entry of historialEntries; index as i">
+        <div class="card">
+          
+          <div class="card-header">
+            <button class="btn btn-link text-dark" data-toggle="collapse" [attr.data-target]=" '#' + i">
+              {{ entry.state }}, {{ entry.country }}
+            </button>
+          </div>
+          
+          <div [id]="i" class="collapse in">
+            <div class="card-body">
+              <b>Latitud: </b>{{ entry.latitud }} <br>
+              <b>Longitud: </b>{{ entry.longitud }} <br>
+              <b>Temperatura: </b>{{ entry.temperatura }} <br>
+              <b>Temperatura Máxima: </b>{{ entry.maxTemperatura }} <br>
+              <b>Temperatura Minima: </b>{{ entry.minTemperatura }} <br>
+              <b>Fecha de Consulta: </b>{{ entry.time }} <br>
+            </div>
+          </div>
+        </div>
+        <br>
+      </li>
+    </ul>
+  </div>
 </span>
