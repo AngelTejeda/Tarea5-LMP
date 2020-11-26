@@ -1,14 +1,17 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { CookiesService } from '../../services/cookies.service';
 
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
-  styleUrls: ['./results.component.css']
+  styleUrls: ['./results.component.css'],
+  providers: [CookiesService]
 })
 export class ResultsComponent implements OnInit {
 
   @Output() closeResultsEvent = new EventEmitter<boolean>();
 
+  constructor(private cookies : CookiesService) {}
   
   //Resultados de la Búsqueda
   countryName : string; //Nombre del país
@@ -31,31 +34,13 @@ export class ResultsComponent implements OnInit {
     this.showCard = true;
 
     //Resultados de la búsqueda.
-    this.countryName = this.getCookie("countryName");
-    this.state = this.getCookie("state");
-    this.lat = this.getCookie("lat");
-    this.lon = this.getCookie("lon");
-    this.temp = this.getCookie("temp");
-    this.maxTemp = this.getCookie("maxTemp");
-    this.minTemp = this.getCookie("minTemp");
-  }
-
-  getCookie(cookieName : string) : string {
-    //Regresa el valor de la cookie indicada.
-    let allCookies : string[] = decodeURIComponent(document.cookie).split(";");
-
-    for(let cookie of allCookies) {
-      let temp : string[] = cookie.split("=");
-      
-      if(temp[0].charAt(0) == ' ')
-        temp[0] = temp[0].substr(1);
-
-      if(temp[0] == cookieName) {
-        return temp[1];
-      }
-    }
-
-    return "";
+    this.countryName = this.cookies.getCookie("countryName");
+    this.state = this.cookies.getCookie("state");
+    this.lat = this.cookies.getCookie("lat");
+    this.lon = this.cookies.getCookie("lon");
+    this.temp = this.cookies.getCookie("temp");
+    this.maxTemp = this.cookies.getCookie("maxTemp");
+    this.minTemp = this.cookies.getCookie("minTemp");
   }
 
   close() : void {

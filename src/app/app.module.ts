@@ -7,6 +7,8 @@ import { FormComponent } from './components/form/form.component';
 import { ResultsComponent } from './components/results/results.component';
 import { HistorialComponent } from './components/historial/historial.component';
 
+import { CookiesService } from './services/cookies.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +20,7 @@ import { HistorialComponent } from './components/historial/historial.component';
     BrowserModule,
     FormsModule
   ],
-  providers: [],
+  providers: [CookiesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

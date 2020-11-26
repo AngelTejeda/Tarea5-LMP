@@ -10,6 +10,7 @@
 <br>
 
 <span *ngIf="historialVisible">
+  <div class="card-header" style="text-align: center; font-size: 20px;">Historial</div>
   <div *ngIf="vacio" class="text-center">
     No hay historial.
   </div>
@@ -19,10 +20,8 @@
       <li class="list-group-item" *ngFor="let entry of historialEntries; index as i">
         <div class="card">
           
-          <div class="card-header">
-            <button class="btn btn-link text-dark" data-toggle="collapse" [attr.data-target]=" '#' + i">
+          <div style="cursor: pointer;" class="card-header" data-toggle="collapse" [attr.data-target]=" '#' + i">
               {{ entry.state }}, {{ entry.country }}
-            </button>
           </div>
           
           <div [id]="i" class="collapse in">
@@ -35,6 +34,7 @@
               <b>Fecha de Consulta: </b>{{ entry.time }} <br>
             </div>
           </div>
+
         </div>
         <br>
       </li>

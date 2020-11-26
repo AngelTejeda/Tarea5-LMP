@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CookiesService } from '../../services/cookies.service';
 
 export interface historialEntryInterface {
   country: string;
@@ -22,10 +23,13 @@ export class HistorialComponent implements OnInit {
   historialVisible: boolean;                    //Variable que indica si se muestra o no el historial.
   vacio: boolean;                               //Variable que indica si el historial está vacío.
 
+  constructor(private cookies : CookiesService) {}
+
   ngOnInit() : void {
     this.historialVisible = false;
     this.vacio = true;
     this.historialEntries = [];
+    this.initializeHistorial( this.cookies.getCookie("historial") );
   }
 
   toggleButton() : void {

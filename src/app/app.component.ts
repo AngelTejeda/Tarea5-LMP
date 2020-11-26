@@ -1,12 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
 import { ResultsComponent } from './components/results/results.component';
-import { FormComponent } from './components/form/form.component'
-import { HistorialComponent } from './components/historial/historial.component'
+import { FormComponent } from './components/form/form.component';
+import { HistorialComponent } from './components/historial/historial.component';
+import { CookiesService } from './services/cookies.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [ CookiesService ]
 })
 export class AppComponent {
   title = 'Tarea5';
@@ -14,10 +16,8 @@ export class AppComponent {
   @ViewChild(ResultsComponent) resultsComponent : ResultsComponent;
   @ViewChild(FormComponent) formComponent : FormComponent;
   @ViewChild(HistorialComponent) historialComponent : HistorialComponent;
-
-  ngAfterViewInit() : void {
-    this.historialComponent.initializeHistorial(this.resultsComponent.getCookie("historial"));
-  }
+  
+  constructor(private cookies : CookiesService) {}
 
   showResults() : void {
     //Muestra los resultados de la búsqueda en el componente results y agrega la búsqueda al historial.
@@ -32,15 +32,15 @@ export class AppComponent {
 
   addToHistory() : void {
     //Agrega la búsqueda actual al historial.
-    let historial : string = this.resultsComponent.getCookie("historial");
+    let historial : string = this.cookies.getCookie("historial");
     let newEntry : string = 
-      this.resultsComponent.getCookie("countryName") + "/" +
-      this.resultsComponent.getCookie("state")+ "/" +
-      this.resultsComponent.getCookie("lat") + "/" +
-      this.resultsComponent.getCookie("lon") + "/" +
-      this.resultsComponent.getCookie("temp") + "/" +
-      this.resultsComponent.getCookie("maxTemp") + "/" +
-      this.resultsComponent.getCookie("minTemp") + "/" +
+      this.cookies.getCookie("countryName") + "/" +
+      this.cookies.getCookie("state")+ "/" +
+      this.cookies.getCookie("lat") + "/" +
+      this.cookies.getCookie("lon") + "/" +
+      this.cookies.getCookie("temp") + "/" +
+      this.cookies.getCookie("maxTemp") + "/" +
+      this.cookies.getCookie("minTemp") + "/" +
       new Date().toUTCString().replace(",", "");
     
     if(historial == "")
@@ -48,7 +48,7 @@ export class AppComponent {
     else
       historial += "," + newEntry;
     
-    this.formComponent.setCookie("historial", historial, 1);
+    this.cookies.setCookie("historial", historial, 1);
 
     this.historialComponent.addEntryToHistorial(newEntry);
   }

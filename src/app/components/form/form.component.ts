@@ -1,14 +1,17 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { resolve } from 'dns';
+import { CookiesService } from '../../services/cookies.service'
 
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
-  styleUrls: ['./form.component.css']
+  styleUrls: ['./form.component.css'],
+  providers: [ CookiesService ]
 })
 export class FormComponent implements OnInit {
 
   @Output() readyEvent = new EventEmitter<void>();  //Evento que se emite cuando se realiza una búsqueda.
+
+  constructor(private cookies : CookiesService) {}
 
   countryCode: string;  //Código del país seleccionado.
   state: string;        //Nombre del estado seleccionado.
@@ -150,12 +153,12 @@ export class FormComponent implements OnInit {
 
       //Cookies de la búsqueda actual
       if (this.countryCode == "mx")
-        this.setCookie("countryName", "México", 1);
+        this.cookies.setCookie("countryName", "México", 1);
       else
-        this.setCookie("countryName", "Estados Unidos", 1);
+        this.cookies.setCookie("countryName", "Estados Unidos", 1);
       
-      this.setCookie("countryCode", this.countryCode, 1);
-      this.setCookie("state", this.state, 1);
+      this.cookies.setCookie("countryCode", this.countryCode, 1);
+      this.cookies.setCookie("state", this.state, 1);
 
       //Llamada API
       this.apiCall(this.countryCode, this.state);
@@ -169,11 +172,11 @@ export class FormComponent implements OnInit {
     fetch(`http://api.openweathermap.org/data/2.5/weather?q=${state},${countryCode}&appid=c9f3f0ec30af23465397f60c7ad5fc2b&lang=es&units=metric`)
       .then(response => response.json())
       .then(data => {
-        this.setCookie("lat", data.coord.lat, 1);
-        this.setCookie("lon", data.coord.lon, 1);
-        this.setCookie("temp", data.main.temp, 1);
-        this.setCookie("maxTemp", data.main.temp_max, 1);
-        this.setCookie("minTemp", data.main.temp_min, 1);
+        this.cookies.setCookie("lat", data.coord.lat, 1);
+        this.cookies.setCookie("lon", data.coord.lon, 1);
+        this.cookies.setCookie("temp", data.main.temp, 1);
+        this.cookies.setCookie("maxTemp", data.main.temp_max, 1);
+        this.cookies.setCookie("minTemp", data.main.temp_min, 1);
 
         this.readyEvent.emit();
       })
@@ -182,16 +185,5 @@ export class FormComponent implements OnInit {
         this.alertError = true;
         this.formDisabled = false;
       });
-  }
-
-  setCookie(cookieName: string, cookieValue: string, daysToExpire: number) : void {
-    //Agrega una cookie con el nombre y el valor especificado.
-    let date: Date = new Date();
-    let expires: string = "expires=";
-
-    date.setTime(date.getTime() + daysToExpire * 24 * 60 * 60 * 1000);
-    expires += date.toISOString();
-
-    document.cookie = cookieName + "=" + cookieValue + ";" + expires + ";path=/";
   }
 }
