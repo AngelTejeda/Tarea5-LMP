@@ -101,3 +101,7 @@ tools/gulp-tasks/cldr/cldr-data/
 
 # Husky
 .husky/_
+website.publishproj
+App_Data/PublishProfiles/Tarea5LenguajesModernosDeProgramacion - FTP.pubxml
+App_Data/PublishProfiles/Tarea5LenguajesModernosDeProgramacion - ReadOnly - FTP.pubxml
+App_Data/PublishProfiles/Tarea5LenguajesModernosDeProgramacion - Web Deploy.pubxml

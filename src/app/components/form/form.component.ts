@@ -59,7 +59,7 @@ export class FormComponent implements OnInit {
       "Tabasco",
       "Tamaulipas",
       "Tlaxcala",
-      "Veracruz de Ignacio de la Llave",
+      "Veracruz",
       "Yucatán",
       "Zacatecas"
 
@@ -96,10 +96,10 @@ export class FormComponent implements OnInit {
       "Nevada",
       "New Hampshire",
       "New Jersey",
-      "New México",
       "New York",
       "North Carolina",
       "North Dakota",
+      "Nuevo México",
       "Ohio",
       "Oklahoma",
       "Oregon",
