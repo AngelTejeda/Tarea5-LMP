@@ -41,7 +41,7 @@ export class AppComponent {
       this.cookies.getCookie("temp") + "/" +
       this.cookies.getCookie("maxTemp") + "/" +
       this.cookies.getCookie("minTemp") + "/" +
-      new Date().toUTCString().replace(",", "");
+      new Date();
     
     if(historial == "")
       historial = newEntry;
